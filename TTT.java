@@ -12,13 +12,17 @@ public class TTT {
 
     private final Pion[][] grid = new Pion[3][3];
     private int turn = 0;
+    private Pion player1, player2;
 
-    public TTT() {
+    public TTT(Pion p1, Pion p2) {
         for (int x = 0; x < 3; x++) {
             for (int y = 0; y < 3; y++) {
                 grid[x][y] = Pion.EMPTY;
             }
         }
+
+        player1 = p1;
+        player2 = p2;
     }
 
     public TTT(TTT ttt) {
@@ -39,9 +43,9 @@ public class TTT {
         System.out.println("-------------");
     }
 
-    public void play(int x, int y, Pion pion){
+    public void play(int x, int y){
         if (turn < 9){
-            grid[y][x] = pion;
+            grid[y][x] = turn % 2 == 0 ? player1 : player2;
 
             print();
 
