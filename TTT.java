@@ -11,6 +11,7 @@ public class TTT {
     }
 
     private final Pion[][] grid = new Pion[3][3];
+    private int turn = 0;
 
     public TTT() {
         for (int x = 0; x < 3; x++) {
@@ -39,6 +40,37 @@ public class TTT {
     }
 
     public void play(int x, int y, Pion pion){
-        
+        if (turn < 9){
+            grid[y][x] = pion;
+
+            print();
+
+            if (check()){
+                // Code if won
+                System.out.println("The " + grid[y][x] + " won!");
+            }
+            else if (turn == 8){
+                // Code if draw
+                System.out.println("It is a draw!");
+            }
+            else {turn++;}
+        }
+    }
+
+    private boolean check(){
+        // Check diagonals
+        if (grid[0][0] != Pion.EMPTY && grid[0][0] == grid[1][1] && grid[1][1] == grid[2][2] || grid[0][2] != Pion.EMPTY && grid[0][2] == grid[1][1] && grid[1][1] == grid[2][0]){
+            return true;
+        }
+
+        for (int i = 0; i < 3; i++) {
+            // Check lines and columns
+            if (grid[i][0] != Pion.EMPTY && grid[i][0] == grid[i][1] && grid[i][1] == grid[i][2] || grid[0][i] != Pion.EMPTY && grid[0][i] == grid[1][i] && grid[1][i] == grid[2][i]){
+                return true;
+            }
+
+        }
+
+        return false;
     }
 }
