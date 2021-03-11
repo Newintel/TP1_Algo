@@ -41,4 +41,26 @@ public class TTT {
     public void play(int x, int y, Pion pion){
         
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("╔═══╤═══╤═══╗\n");
+
+        for (int i = 0; i < 3; i++) {
+            builder.append("║");
+            for (int j = 0; j < 3; j++) {
+                builder.append(" " + grid[i][j].c + " ");
+                if (j < 2)
+                    builder.append("│");
+            }
+            builder.append("║\n");
+            if (i < 2)
+                builder.append("╟───┼───┼───╢\n");
+        }
+
+        builder.append("╚═══╧═══╧═══╝\n");
+
+        return builder.toString();
+    }
 }
