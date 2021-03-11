@@ -1,25 +1,25 @@
 public class TTT {
 
-    public enum Pion {
+    public enum Mark {
         EMPTY('-'), CIRCLE('O'), CROSS('X');
 
         public final char c;
 
-        Pion(char c) {
+        Mark(char c) {
             this.c = c;
         }
     }
 
-    public static final Pion PLAYER1 = Pion.CROSS;
-    public static final Pion PLAYER2 = Pion.CIRCLE;
+    public static final Mark PLAYER1 = Mark.CROSS;
+    public static final Mark PLAYER2 = Mark.CIRCLE;
 
-    private final Pion[][] grid = new Pion[3][3];
+    private final Mark[][] grid = new Mark[3][3];
     private int turn = 0;
 
     public TTT() {
         for (int x = 0; x < 3; x++) {
             for (int y = 0; y < 3; y++) {
-                grid[x][y] = Pion.EMPTY;
+                grid[x][y] = Mark.EMPTY;
             }
         }
     }
@@ -46,7 +46,7 @@ public class TTT {
     }
 
     public void play(int x, int y) {
-        if (turn < 9 && grid[x][y] == Pion.EMPTY) {
+        if (turn < 9 && grid[x][y] == Mark.EMPTY) {
             grid[y][x] = getPlayer();
 
             // C'est mieux d'afficher dans la boucle principale non ?
@@ -66,7 +66,7 @@ public class TTT {
     /**
      * @return The player whose turn it is to play.
      */
-    public Pion getPlayer() {
+    public Mark getPlayer() {
         return turn % 2 == 0 ? PLAYER1 : PLAYER2;
     }
 
@@ -75,13 +75,13 @@ public class TTT {
      */
     private boolean check() {
         // Check diagonals
-        if (grid[0][0] != Pion.EMPTY && grid[0][0] == grid[1][1] && grid[1][1] == grid[2][2] || grid[0][2] != Pion.EMPTY && grid[0][2] == grid[1][1] && grid[1][1] == grid[2][0]) {
+        if (grid[0][0] != Mark.EMPTY && grid[0][0] == grid[1][1] && grid[1][1] == grid[2][2] || grid[0][2] != Mark.EMPTY && grid[0][2] == grid[1][1] && grid[1][1] == grid[2][0]) {
             return true;
         }
 
         for (int i = 0; i < 3; i++) {
             // Check lines and columns
-            if (grid[i][0] != Pion.EMPTY && grid[i][0] == grid[i][1] && grid[i][1] == grid[i][2] || grid[0][i] != Pion.EMPTY && grid[0][i] == grid[1][i] && grid[1][i] == grid[2][i]) {
+            if (grid[i][0] != Mark.EMPTY && grid[i][0] == grid[i][1] && grid[i][1] == grid[i][2] || grid[0][i] != Mark.EMPTY && grid[0][i] == grid[1][i] && grid[1][i] == grid[2][i]) {
                 return true;
             }
 
