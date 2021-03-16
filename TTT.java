@@ -45,12 +45,9 @@ public class TTT {
         System.out.println("-------------");
     }
 
-    public void play(int x, int y) {
-        if (turn < 9 && grid[x][y] == Mark.EMPTY) {
+    public boolean play(int x, int y) {
+        if (x >=0 && y >= 0 && x < 3 && y < 3 && turn < 9 && grid[x][y] == Mark.EMPTY) {
             grid[y][x] = getPlayer();
-
-            // C'est mieux d'afficher dans la boucle principale non ?
-//            print();
 
             if (check()) {
                 // Code if won
@@ -60,7 +57,9 @@ public class TTT {
                 System.out.println("It is a draw!");
             }
             turn++;
+            return true;
         }
+        return false;
     }
 
     /**
