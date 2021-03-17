@@ -15,6 +15,7 @@ public class TTT {
 
     private final Mark[][] grid = new Mark[3][3];
     private int turn = 0;
+    private Mark winnerCache = null;
 
     public TTT() {
         for (int x = 0; x < 3; x++) {
@@ -31,6 +32,7 @@ public class TTT {
             }
         }
         this.turn = ttt.turn;
+        this.winnerCache = ttt.winnerCache;
     }
 
     public void print() {
@@ -45,8 +47,8 @@ public class TTT {
         System.out.println("-------------");
     }
 
-    public boolean play(int x, int y) {
-        if (x >=0 && y >= 0 && x < 3 && y < 3 && turn < 9 && grid[x][y] == Mark.EMPTY) {
+    public synchronized boolean play(int x, int y) {
+        if (x >= 0 && y >= 0 && x < 3 && y < 3 && turn < 9 && grid[x][y] == Mark.EMPTY) {
             grid[y][x] = getPlayer();
 
             if (check()) {
@@ -57,6 +59,7 @@ public class TTT {
                 System.out.println("It is a draw!");
             }
             turn++;
+            winnerCache = null;
             return true;
         }
         return false;
@@ -87,6 +90,50 @@ public class TTT {
         }
 
         return false;
+    }
+
+    private synchronized Mark __getWinner() {
+        Mark m;
+
+        // Diagonals
+        m = grid[1][1];
+        if (m != Mark.EMPTY) {
+            if (m == grid[0][0] && m == grid[2][2] || m == grid[0][2] && m == grid[2][0]) {
+                return m;
+            }
+        }
+
+        // Lines and columns
+        for (int i = 0; i < 3; i++) {
+            // Columns
+            m = grid[0][i];
+            if (m != Mark.EMPTY) {
+                if (m == grid[1][i] && m == grid[2][i]) {
+                    return m;
+                }
+            }
+
+            // Lines
+            m = grid[i][0];
+            if (m != Mark.EMPTY) {
+                if (m == grid[i][1] && m == grid[i][2]) {
+                    return m;
+                }
+            }
+        }
+
+        return Mark.EMPTY;
+    }
+
+    public synchronized Mark getWinner() {
+        if (winnerCache == null) {
+            winnerCache = __getWinner();
+        }
+        return winnerCache;
+    }
+
+    public synchronized boolean isGameOver() {
+        return turn == 9 || getWinner() != Mark.EMPTY;
     }
 
     @Override
