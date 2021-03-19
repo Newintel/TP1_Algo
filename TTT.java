@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class TTT {
 
     public enum Mark {
@@ -134,6 +136,21 @@ public class TTT {
 
     public synchronized boolean isGameOver() {
         return turn == 9 || getWinner() != Mark.EMPTY;
+    }
+
+    public ArrayList<Integer> getEmptyCells(){
+        if (turn == 9){
+            return null;
+        }
+        ArrayList<Integer> res = new ArrayList<Integer>();
+        for (int i = 0; i < 3; i++){
+            for (int j = 0; j < 3; j++){
+                if (grid[i][j] == Mark.EMPTY){
+                    res.add(3 * i + j);
+                }
+            }
+        }
+        return res;
     }
 
     @Override
