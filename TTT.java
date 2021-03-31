@@ -50,21 +50,19 @@ public class TTT {
     }
 
     public synchronized boolean play(int x, int y) {
-        if (x >= 0 && y >= 0 && x < 3 && y < 3 && turn < 9 && grid[x][y] == Mark.EMPTY) {
+        if (x >= 0 && y >= 0 && x < 3 && y < 3 && grid[y][x] == Mark.EMPTY) {
             grid[y][x] = getPlayer();
-
-            if (check()) {
-                // Code if won
-                System.out.println("The " + grid[y][x] + " won!");
-            } else if (turn == 8) {
-                // Code if draw
-                System.out.println("It is a draw!");
-            }
             turn++;
             winnerCache = null;
             return true;
         }
         return false;
+    }
+
+    public synchronized boolean play(int cellNumber) {
+        int x = --cellNumber % 3;
+        int y = cellNumber / 3;
+        return this.play(x, y);
     }
 
     /**
@@ -138,14 +136,14 @@ public class TTT {
         return turn == 9 || getWinner() != Mark.EMPTY;
     }
 
-    public ArrayList<Integer> getEmptyCells(){
-        if (turn == 9){
+    public ArrayList<Integer> getEmptyCells() {
+        if (turn == 9) {
             return null;
         }
         ArrayList<Integer> res = new ArrayList<Integer>();
-        for (int i = 0; i < 3; i++){
-            for (int j = 0; j < 3; j++){
-                if (grid[i][j] == Mark.EMPTY){
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (grid[i][j] == Mark.EMPTY) {
                     res.add(3 * i + j);
                 }
             }
