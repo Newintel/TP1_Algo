@@ -140,15 +140,20 @@ public class TTT {
         if (turn == 9) {
             return null;
         }
-        ArrayList<Integer> res = new ArrayList<Integer>();
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (grid[i][j] == Mark.EMPTY) {
-                    res.add(3 * i + j);
+
+        ArrayList<Integer> res = new ArrayList<>();
+        for (int y = 0; y < 3; y++) {
+            for (int x = 0; x < 3; x++) {
+                if (grid[y][x] == Mark.EMPTY) {
+                    res.add(3 * y + x + 1);
                 }
             }
         }
         return res;
+    }
+
+    public int getTurn() {
+        return turn;
     }
 
     @Override
