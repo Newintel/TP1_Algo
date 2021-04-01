@@ -9,7 +9,13 @@ class Main {
         int cell;
         do {
             System.out.print("Enter the cell number (1-9): ");
-            cell = scanner.nextInt();
+            try {
+                cell = scanner.nextInt();
+            } catch (Exception e) {
+                cell = -1;
+            } finally {
+                scanner.nextLine();
+            }
         } while (!game.play(cell));
         System.out.println(game);
     }
@@ -43,22 +49,51 @@ class Main {
     }
 
     public static void main(String[] args) {
-        game = new TTT();
-        System.out.println(game);
+        Scanner scanner = new Scanner(System.in);
 
-        while (!game.isGameOver()) {
-            play();
+        boolean exit = false;
+        int choice = -1;
 
-            if (!game.isGameOver()) {
+        do {
+            System.out.println("How do you want to play?");
+            System.out.println("\t0: Player vs. Player");
+            System.out.println("\t1: Player vs. AI");
+            System.out.println("\t2: AI vs. Player");
+            System.out.println("\t3: AI vs. AI");
+            do {
+                System.out.print("Enter your choice: ");
+                try {
+                    choice = scanner.nextInt();
+                } catch (Exception ignored) {
+                } finally {
+                    scanner.nextLine();
+                    if (choice < 0 || choice > 3) {
+                        choice = -1;
+                    }
+                }
+            } while (choice == -1);
+
+            p1_human = (choice & 2) == 0;
+            p2_human = (choice & 1) == 0;
+
+            game = new TTT();
+            System.out.println(game);
+
+            while (!game.isGameOver()) {
                 play();
             }
-        }
 
-        if (game.getWinner() == TTT.Mark.EMPTY) {
-            System.out.println("It's a draw!");
-        } else {
-            System.out.println(game.getWinner() + " won!");
-        }
+            if (game.getWinner() == TTT.Mark.EMPTY) {
+                System.out.println("It's a draw!");
+            } else {
+                System.out.println(game.getWinner() + " won!");
+            }
+
+            System.out.println();
+            System.out.print("Do you want to play again ? [Y|n]: ");
+            exit = !scanner.nextLine().matches("^$|^[yY]");
+            System.out.println("\n════════════════════\n");
+        } while (!exit);
     }
 
 }
