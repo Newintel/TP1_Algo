@@ -11,7 +11,7 @@ public class IA {
         for (int i = 0; i < emptyCellsCount; i++) {
             TTT copy = new TTT(game);
             copy.play(emptyCells.get(i));
-            scores[i] = minimax(copy, player);
+            scores[i] = minimax(copy, 1, player);
         }
 
         int maxIndex = 0;
@@ -22,14 +22,14 @@ public class IA {
         return emptyCells.get(maxIndex);
     }
 
-    private static int minimax(TTT game, TTT.Mark player) {
+    private static int minimax(TTT game, int depth, TTT.Mark player) {
         if (game.isGameOver()) {
             if (game.getWinner() == player) {
-                return 10;
+                return 10 * (9 - depth);
             } else if (game.getWinner() == TTT.Mark.EMPTY) {
                 return 0;
             } else {
-                return -10;
+                return -10 * (9-depth);
             }
         }
 
@@ -40,7 +40,7 @@ public class IA {
         for (int i = 0; i < emptyCellsCount; i++) {
             TTT copy = new TTT(game);
             copy.play(emptyCells.get(i));
-            scores[i] = minimax(copy, player);
+            scores[i] = minimax(copy, depth + 1, player);
         }
 
         if (game.getPlayer() == player) {
